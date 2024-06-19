@@ -1,0 +1,71 @@
+<div class="container">
+  <div class="col-12 p-3">
+    <hr>
+    <h2>Products Management</h2>
+    <hr>
+    <div class="col-12 d-flex align-items-center justify-content-center">
+      <div class="col-6">
+        <input type="search" class="form-control" id="" name="" placeholder="Search here...">
+      </div>
+      <div class="col-6 d-flex align-items-center justify-content-end">
+        <button (click)="openNewProductForm()" mat-raised-button color="primary">+ New Customer</button>
+      </div>
+    </div>
+    <div class="col-12 p-2 mt-3">
+      <mat-progress-bar *ngIf="loading" mode="indeterminate"></mat-progress-bar>
+    </div>
+    <div class="col-12 mt-4">
+      <table class="table table-striped">
+        <thead>
+        <tr>
+          <th>#Id</th>
+          <th>Description</th>
+          <th>Qty</th>
+          <th>Unit Price</th>
+          <th>Images</th>
+          <th>Tools</th>
+        </tr>
+        </thead>
+        <tbody>
+        <tr *ngFor="let products of allProducts">
+          <td>
+            <div class="context">
+              {{ products.propertyId }} &nbsp;
+              <mat-icon (click)="copyToClipboard(products.propertyId)">content_copy</mat-icon>
+            </div>
+          </td>
+          <td>
+            <div class="context">
+              {{ products.description }}
+            </div>
+          </td>
+          <td>
+            <div class="context">
+              {{ products.qty }}
+            </div>
+          </td>
+          <td>
+            <div class="context">
+              {{ products.unitPrice | currency:"LKR " }}
+            </div>
+          </td>
+          <td>
+            <div class="context">
+              <button mat-raised-button color="primary" matTooltip="Manage Images" (click)="openProductImagesForm('')">Manage</button>
+            </div>
+          </td>
+          <td>
+            <button (click)="openDeleteProductForm('')" class="d-flex align-items-center justify-content-center" matTooltip="delete" mat-icon-button>
+              <mat-icon class="fs-4" color="warn">delete_sweep</mat-icon>
+            </button>
+            <button (click)="openUpdateProductForm('')" matTooltip="Update"
+                    class="d-flex align-items-center justify-content-center" mat-icon-button>
+              <mat-icon class="fs-4" color="primary">edit</mat-icon>
+            </button>
+          </td>
+        </tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+</div>

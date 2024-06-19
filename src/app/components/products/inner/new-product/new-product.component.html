@@ -1,0 +1,22 @@
+<h2 mat-dialog-title>Add New Product</h2>
+<form [formGroup]="form" (ngSubmit)="create()">
+  <mat-dialog-content class="mat-typography">
+    <div class="col-12">
+      <label for="description" style="font-size: 15px;">Product Description</label>
+      <input formControlName="description" type="text" style="height: 50px" id="description" placeholder="Description" class="form-control">
+    </div>
+    <div class="col-12 mt-3">
+      <label for="unit_price" style="font-size: 15px;">Unit Price</label>
+      <input formControlName="unitPrice" type="number" style="height: 50px" id="unit_price" placeholder="Unit Price" class="form-control">
+    </div>
+    <div class="col-12 mt-3">
+      <label for="qty" style="font-size: 15px;">Product Qty</label>
+      <input formControlName="qty" type="text" style="height: 50px" id="qty" placeholder="Quantity" class="form-control">
+    </div>
+  </mat-dialog-content>
+  <mat-dialog-actions align="end">
+    <button mat-button mat-dialog-close (click)="close()">Cancel</button>
+    <button type="submit" color="primary" [disabled]="form.invalid || loading" mat-raised-button>Save</button>
+  </mat-dialog-actions>
+
+</form>

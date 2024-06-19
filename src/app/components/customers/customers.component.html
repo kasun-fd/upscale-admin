@@ -1,0 +1,65 @@
+<div class="container">
+  <div class="col-12 p-3">
+    <hr>
+    <h2>Customer Management</h2>
+    <hr>
+    <div class="col-6">
+      <input type="search" class="form-control" id="" name="" placeholder="Search here...">
+    </div>
+    <div class="col-12 mt-4">
+      <table class="table table-striped">
+        <thead>
+        <tr>
+          <th>#Id</th>
+          <th>Full Name</th>
+          <th>Email</th>
+          <th>Address</th>
+          <th>Contact</th>
+          <th>Active Status</th>
+          <th>Tools</th>
+        </tr>
+        </thead>
+        <tbody>
+        <tr>
+          <td>
+            <div class="context">
+              edg-45fh-we &nbsp;
+              <mat-icon>content_copy</mat-icon>
+            </div>
+          </td>
+          <td>
+            <div class="context">
+              Kasun Fernando
+            </div>
+          </td>
+          <td>
+            <div class="context">
+              <a href="#">kasun{{'@'}}gmail.com</a>
+            </div>
+          </td>
+          <td>
+            <div class="context">
+              Colombo rd Ja-Ela
+            </div>
+          </td>
+          <td>
+            <div class="context">
+              <a href="#">+94767298181</a>
+            </div>
+          </td>
+          <td>
+            <div class="context">
+              <app-customer-status-manager [customer]="''"></app-customer-status-manager>
+            </div>
+          </td>
+          <td>
+              <button class="d-flex align-items-center justify-content-center" mat-icon-button>
+                <mat-icon class="fs-4" color="warn">delete_sweep</mat-icon>
+              </button>
+          </td>
+        </tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+</div>

@@ -1,0 +1,30 @@
+.context{
+  display: flex;
+  align-items: center;
+  justify-content: start;
+  height: 50px;
+}
+
+mat-icon{
+  width: 20px;
+  height: 20px;
+  display: flex;
+  font-size: 15px;
+  cursor: pointer;
+  font-weight: 600;
+}
+
+mat-icon:hover{
+  color: purple;
+}
+
+.context span{
+  color: blue;
+  cursor: pointer;
+  font-weight: 600;
+}
+
+.context span:hover{
+  color: darkred;
+  font-weight: 600;
+}

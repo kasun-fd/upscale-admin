@@ -99,7 +99,7 @@ export class ProductsComponent implements OnInit{
     let matDialogRef = this.matDialog.open(UpdateProductComponent,{
       width:"500px",
       disableClose:true,
-      data:product,
+      data: {product:product}
     });
 
     matDialogRef.afterClosed().subscribe(response=>{

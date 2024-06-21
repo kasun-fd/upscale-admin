@@ -32,4 +32,12 @@ export class ProductService {
     return this.http.delete(this.baseUrl+"/"+id);
   }
 
+  update(obj:any, id:any):Observable<any>{
+    return this.http.put(this.baseUrl+"/"+id,{
+      qty:obj.qty,
+      unitPrice:obj.unitPrice,
+      description:obj.description
+    })
+  }
+
 }

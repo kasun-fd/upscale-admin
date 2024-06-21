@@ -4,9 +4,9 @@
     <h2>Products Management</h2>
     <hr>
     <div class="col-12 d-flex align-items-center justify-content-center">
-      <div class="col-6">
-        <input type="search" class="form-control" id="" name="" placeholder="Search here...">
-      </div>
+      <form [formGroup]="searchForm" class="col-6">
+        <input type="search" formControlName="text" class="form-control" id="" name="" placeholder="Search here...">
+      </form>
       <div class="col-6 d-flex align-items-center justify-content-end">
         <button (click)="openNewProductForm()" mat-raised-button color="primary">+ New Customer</button>
       </div>
@@ -46,19 +46,21 @@
           </td>
           <td>
             <div class="context">
-              {{ products.unitPrice | currency:"LKR " }}
+              {{ products.unitPrice | currency:"USD " }}
             </div>
           </td>
           <td>
             <div class="context">
-              <button mat-raised-button color="primary" matTooltip="Manage Images" (click)="openProductImagesForm('')">Manage</button>
+              <button mat-raised-button color="primary" matTooltip="Manage Images"
+                      (click)="openProductImagesForm(products)">Manage</button>
             </div>
           </td>
           <td>
-            <button (click)="openDeleteProductForm('')" class="d-flex align-items-center justify-content-center" matTooltip="delete" mat-icon-button>
+            <button (click)="openDeleteProductForm(products)" class="d-flex align-items-center justify-content-center"
+                    matTooltip="delete" mat-icon-button>
               <mat-icon class="fs-4" color="warn">delete_sweep</mat-icon>
             </button>
-            <button (click)="openUpdateProductForm('')" matTooltip="Update"
+            <button (click)="openUpdateProductForm(products)" matTooltip="Update"
                     class="d-flex align-items-center justify-content-center" mat-icon-button>
               <mat-icon class="fs-4" color="primary">edit</mat-icon>
             </button>
@@ -67,5 +69,16 @@
         </tbody>
       </table>
     </div>
+
+    <mat-paginator
+    [length]="count"
+    [pageIndex]="page"
+    [pageSize]="size"
+    [pageSizeOptions]="[1,10,100]"
+    (page)="getServerData($event)"
+    >
+
+    </mat-paginator>
+
   </div>
 </div>

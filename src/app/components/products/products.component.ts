@@ -14,6 +14,9 @@ import {response} from "express";
 import {CurrencyPipe, NgForOf, NgIf} from "@angular/common";
 import {MatProgressBar} from "@angular/material/progress-bar";
 import {MatSnackBar} from "@angular/material/snack-bar";
+import {FormControl, FormGroup, ReactiveFormsModule, Validators} from "@angular/forms";
+import {debounceTime} from "rxjs";
+import {MatPaginator, PageEvent} from "@angular/material/paginator";
 
 @Component({
   selector: 'app-products',
@@ -27,7 +30,9 @@ import {MatSnackBar} from "@angular/material/snack-bar";
     NgForOf,
     CurrencyPipe,
     MatProgressBar,
-    NgIf
+    NgIf,
+    ReactiveFormsModule,
+    MatPaginator
   ],
   templateUrl: './products.component.html',
   styleUrl: './products.component.scss'
@@ -38,7 +43,22 @@ export class ProductsComponent implements OnInit{
   readonly productService = inject(ProductService);
   readonly snackBar = inject(MatSnackBar);
 
+  searchtext = '';
+
+  page:any = 0
+
+  size:any = 2
+
+  count = 0;
+
   allProducts:any[] = [];
+
+
+  searchForm = new FormGroup<any>({
+    text:new FormControl('',[
+      Validators.required
+    ])
+  })
 
   loading = false;
 
@@ -47,7 +67,15 @@ export class ProductsComponent implements OnInit{
   }
 
   ngOnInit(): void {
+
     this.loadAllProduct();
+
+    this.searchForm.valueChanges
+      .pipe(debounceTime(1000))
+      .subscribe(data=>{
+        this.searchtext = data
+        this.loadAllProduct();
+      })
   }
 
   openNewProductForm(){
@@ -95,16 +123,25 @@ export class ProductsComponent implements OnInit{
   }
 
   private loadAllProduct() {
-    let all = this.productService.getAll("",0,7);
-    all.subscribe((resp)=>{
-      let data = resp.data.dataList;
-      if (this.allProducts = data){
+    // let all = this.productService.getAll("",0,7);
+    // all.subscribe((resp)=>{
+    //   let data = resp.data.dataList;
+    //   if (this.allProducts = data){
+    //     this.loading = false;
+    //   }
+    // },error => {
+    //   console.log(error?.error?.message);
+    //   this.loading = false;
+    // })
+
+    this.productService.getAll(this.searchtext,this.page,this.size)
+      .subscribe(response=>{
+        this.allProducts = response.data?.dataList;
+        this.count = response.data?.count;
+        console.log(response.data?.datalist)
         this.loading = false;
-      }
-    },error => {
-      console.log(error?.error?.message);
-      this.loading = false;
     })
+
   }
 
   copyToClipboard(id:string) {
@@ -124,5 +161,11 @@ export class ProductsComponent implements OnInit{
 
   openDeleteProductForm(product: any) {
 
+  }
+
+  getServerData(data:PageEvent) {
+    this.page = data.pageIndex;
+    this.size = data.pageSize;
+    this.loadAllProduct();
   }
 }

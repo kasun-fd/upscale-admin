@@ -19,9 +19,13 @@ export class ProductService {
     })
   }
 
-  getAll(searchText:string,page:number,size:number):Observable<any>{
-    const url = `${this.baseUrl}/list?searchText=${searchText}&page=${page}&size=${size}`;
-    return this.http.get(url);
+  getAll(searchText:any,page:any,size:any):Observable<any>{
+    // const url = `${this.baseUrl}/list?searchText=${searchText}&page=${page}&size=${size}`;
+    let params = new HttpParams();
+    params = params.append('searchText',searchText)
+    params = params.append('page',page)
+    params = params.append('size',size)
+    return this.http.get(this.baseUrl+"/list",{params});
   }
 
   delete(id:string){

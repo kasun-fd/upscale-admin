@@ -17,6 +17,8 @@ import {MatSnackBar} from "@angular/material/snack-bar";
 import {FormControl, FormGroup, ReactiveFormsModule, Validators} from "@angular/forms";
 import {debounceTime} from "rxjs";
 import {MatPaginator, PageEvent} from "@angular/material/paginator";
+import {ClipboardService} from "../../service/clipboard/clipboard.service";
+import {DeleteProductComponent} from "./inner/delete-product/delete-product.component";
 
 @Component({
   selector: 'app-products',
@@ -42,6 +44,7 @@ export class ProductsComponent implements OnInit{
   readonly matDialog = inject(MatDialog);
   readonly productService = inject(ProductService);
   readonly snackBar = inject(MatSnackBar);
+  readonly CopyService = inject(ClipboardService);
 
   searchtext = '';
 
@@ -123,17 +126,6 @@ export class ProductsComponent implements OnInit{
   }
 
   private loadAllProduct() {
-    // let all = this.productService.getAll("",0,7);
-    // all.subscribe((resp)=>{
-    //   let data = resp.data.dataList;
-    //   if (this.allProducts = data){
-    //     this.loading = false;
-    //   }
-    // },error => {
-    //   console.log(error?.error?.message);
-    //   this.loading = false;
-    // })
-
     this.productService.getAll(this.searchtext,this.page,this.size)
       .subscribe(response=>{
         this.allProducts = response.data?.dataList;
@@ -144,28 +136,29 @@ export class ProductsComponent implements OnInit{
 
   }
 
-  copyToClipboard(id:string) {
-    navigator.clipboard.writeText(id)
-      .then(() => {
-        this.snackBar.open('Copied',"Close",{
-          duration:2000,
+  openDeleteProductForm(product: any) {
+    if (confirm("Are You Sure?")){
+      this.productService.delete(product.propertyId).subscribe(response=>{
+        this.loadAllProduct();
+        this.snackBar.open('Deleted!','Close',{
+          duration:3000,
           direction:'ltr',
           verticalPosition:'bottom',
           horizontalPosition:'start'
         })
+      },error => {
+        console.log(error.error.message);
       })
-      .catch((err) => {
-        console.error('Failed to copy text: ', err);
-      });
-  }
-
-  openDeleteProductForm(product: any) {
-
+    }
   }
 
   getServerData(data:PageEvent) {
     this.page = data.pageIndex;
     this.size = data.pageSize;
     this.loadAllProduct();
+  }
+
+  copyToClipboard(propertyId: any) {
+    this.CopyService.copyToClipboard(propertyId);
   }
 }

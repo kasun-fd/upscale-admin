@@ -1,14 +1,63 @@
 <h2 mat-dialog-title>Manage Product Images</h2>
-<form action="">
+<form [formGroup]="form" (ngSubmit)="addImages()">
   <mat-dialog-content class="mat-typography">
     <div class="col-12">
       <label for="file" style="font-size: 15px;">Product Image</label>
-      <input type="file" id="file" class="form-control">
+      <input formControlName="file" (change)="imageChange($event)" type="file" id="file" class="form-control">
     </div>
   </mat-dialog-content>
   <mat-dialog-actions align="end">
     <button mat-button mat-dialog-close>Cancel</button>
-    <button mat-button [mat-dialog-close]="true" cdkFocusInitial>Save</button>
+    <button mat-raised-button color="primary" [disabled]="form.invalid" [mat-dialog-close]="true" type="submit">Add</button>
   </mat-dialog-actions>
 </form>
 <hr>
+
+<div class="col-12 d-flex align-items-center justify-content-center" *ngIf="messageBox">
+  <div class="col-10 p-3 fw-bold fs-5 text-white d-flex align-items-center justify-content-center bg-danger rounded-3">No Images Yet.</div>
+</div>
+
+<div class="col-12 ms-2" style="height: 400px" *ngIf="content">
+  <div class="row col-12">
+    <div class="col-12 col-md-4 p-3 d-flex align-items-center justify-content-center">
+      <div class="col-12 bg-primary rounded-3 position-relative" style="height: 10vw">
+        <img src="https://cdn.pixabay.com/photo/2018/05/06/14/00/water-3378639_1280.jpg" style="height: 10vw; object-fit: cover" class="col-12 rounded-3" alt="product">
+      </div>
+    </div>
+    <div class="col-12 col-md-4 p-3 d-flex align-items-center justify-content-center">
+      <div class="col-12 bg-danger rounded-3 position-relative" style="height: 10vw">
+        <img src="https://cdn.pixabay.com/photo/2018/05/06/14/00/water-3378639_1280.jpg" style="height: 10vw; object-fit: cover" class="col-12 rounded-3" alt="product">
+      </div>
+    </div>
+    <div class="col-12 col-md-4 p-3 d-flex align-items-center justify-content-center">
+      <div class="col-12 bg-warning rounded-3 position-relative" style="height: 10vw">
+        <img src="https://cdn.pixabay.com/photo/2018/05/06/14/00/water-3378639_1280.jpg" style="height: 10vw; object-fit: cover" class="col-12 rounded-3" alt="product">
+      </div>
+    </div>
+    <div class="col-12 col-md-4 p-3 d-flex align-items-center justify-content-center">
+      <div class="col-12 bg-dark rounded-3 position-relative" style="height: 10vw">
+        <img src="https://cdn.pixabay.com/photo/2018/05/06/14/00/water-3378639_1280.jpg" style="height: 10vw; object-fit: cover" class="col-12 rounded-3" alt="product">
+      </div>
+    </div>
+    <div class="col-12 col-md-4 p-3 d-flex align-items-center justify-content-center">
+      <div class="col-12 bg-primary rounded-3 position-relative" style="height: 10vw">
+        <img src="https://cdn.pixabay.com/photo/2018/05/06/14/00/water-3378639_1280.jpg" style="height: 10vw; object-fit: cover" class="col-12 rounded-3" alt="product">
+      </div>
+    </div>
+    <div class="col-12 col-md-4 p-3 d-flex align-items-center justify-content-center">
+      <div class="col-12 bg-primary rounded-3 position-relative" style="height: 10vw">
+        <img src="https://cdn.pixabay.com/photo/2018/05/06/14/00/water-3378639_1280.jpg" style="height: 10vw; object-fit: cover" class="col-12 rounded-3" alt="product">
+      </div>
+    </div>
+    <div class="col-12 col-md-4 p-3 d-flex align-items-center justify-content-center">
+      <div class="col-12 bg-primary rounded-3 position-relative" style="height: 10vw">
+        <img src="https://cdn.pixabay.com/photo/2018/05/06/14/00/water-3378639_1280.jpg" style="height: 10vw; object-fit: cover" class="col-12 rounded-3" alt="product">
+      </div>
+    </div>
+    <div class="col-12 col-md-4 p-3 d-flex align-items-center justify-content-center">
+      <div class="col-12 bg-primary rounded-3 position-relative" style="height: 10vw">
+        <img src="https://cdn.pixabay.com/photo/2018/05/06/14/00/water-3378639_1280.jpg" style="height: 10vw; object-fit: cover" class="col-12 rounded-3" alt="product">
+      </div>
+    </div>
+  </div>
+</div>

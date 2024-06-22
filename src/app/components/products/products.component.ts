@@ -130,7 +130,6 @@ export class ProductsComponent implements OnInit{
       .subscribe(response=>{
         this.allProducts = response.data?.dataList;
         this.count = response.data?.count;
-        console.log(response.data?.datalist)
         this.loading = false;
     })
 

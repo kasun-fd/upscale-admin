@@ -1,13 +1,13 @@
 import { TestBed } from '@angular/core/testing';
 
-import { ProductImagesService } from './product-images.service';
+import { FastForexService } from './fast-forex.service';
 
-describe('ProductImagesService', () => {
-  let service: ProductImagesService;
+describe('FastForexService', () => {
+  let service: FastForexService;
 
   beforeEach(() => {
     TestBed.configureTestingModule({});
-    service = TestBed.inject(ProductImagesService);
+    service = TestBed.inject(FastForexService);
   });
 
   it('should be created', () => {

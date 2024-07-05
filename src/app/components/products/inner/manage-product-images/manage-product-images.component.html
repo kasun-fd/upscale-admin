@@ -1,14 +1,14 @@
 <h2 mat-dialog-title>Manage Product Images</h2>
-<form [formGroup]="form" (ngSubmit)="addImages()">
+<form [formGroup]="form" (ngSubmit)="uploadFile()">
   <mat-dialog-content class="mat-typography">
     <div class="col-12">
       <label for="file" style="font-size: 15px;">Product Image</label>
-      <input formControlName="file" (change)="imageChange($event)" type="file" id="file" class="form-control">
+      <input formControlName="file" (change)="onFileSelected($event)" type="file" id="file" class="form-control">
     </div>
   </mat-dialog-content>
   <mat-dialog-actions align="end">
     <button mat-button mat-dialog-close>Cancel</button>
-    <button mat-raised-button color="primary" [disabled]="form.invalid" [mat-dialog-close]="true" type="submit">Add</button>
+    <button mat-raised-button color="primary" [disabled]="form.invalid || loading" [mat-dialog-close]="true" type="submit">Add</button>
   </mat-dialog-actions>
 </form>
 <hr>

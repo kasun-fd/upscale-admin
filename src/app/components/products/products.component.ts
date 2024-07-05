@@ -18,7 +18,8 @@ import {FormControl, FormGroup, ReactiveFormsModule, Validators} from "@angular/
 import {debounceTime} from "rxjs";
 import {MatPaginator, PageEvent} from "@angular/material/paginator";
 import {ClipboardService} from "../../service/clipboard/clipboard.service";
-import {DeleteProductComponent} from "./inner/delete-product/delete-product.component";
+import {DeleteProductComponent} from "./inner/delete-product/delete-product.component"
+import {FastForexService} from "../../service/fast-forex/fast-forex.service";
 
 @Component({
   selector: 'app-products',
@@ -45,6 +46,7 @@ export class ProductsComponent implements OnInit{
   readonly productService = inject(ProductService);
   readonly snackBar = inject(MatSnackBar);
   readonly CopyService = inject(ClipboardService);
+  readonly fastForex = inject(FastForexService);
 
   searchtext = '';
 
@@ -55,6 +57,14 @@ export class ProductsComponent implements OnInit{
   count = 0;
 
   allProducts:any[] = [];
+
+  usdAmount:any;
+
+  lkrAmount:any;
+
+  rawAmount:any[] = [];
+
+  rate:any = 0;
 
 
   searchForm = new FormGroup<any>({
@@ -71,12 +81,15 @@ export class ProductsComponent implements OnInit{
 
   ngOnInit(): void {
 
-    this.loadAllProduct();
+    this.fastForex.exchange('USD', 'LKR').subscribe(data => {
+      this.rate = data?.result?.LKR;
+      this.loadAllProduct();
+    });
 
     this.searchForm.valueChanges
       .pipe(debounceTime(1000))
       .subscribe(data=>{
-        this.searchtext = data
+        this.searchtext = data.text
         this.loadAllProduct();
       })
   }
@@ -128,8 +141,8 @@ export class ProductsComponent implements OnInit{
   private loadAllProduct() {
     this.productService.getAll(this.searchtext,this.page,this.size)
       .subscribe(response=>{
-        this.allProducts = response.data?.dataList;
         this.count = response.data?.count;
+        this.allProducts = response.data?.dataList;
         this.loading = false;
     })
 

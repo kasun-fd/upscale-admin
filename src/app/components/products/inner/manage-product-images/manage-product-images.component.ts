@@ -9,9 +9,9 @@ import {
 } from "@angular/material/dialog";
 import {NgIf} from "@angular/common";
 import {FormControl, FormGroup, ReactiveFormsModule, Validators} from "@angular/forms";
-import {ProductImagesService} from "../../../../service/product-images/product-images.service";
 import {response} from "express";
 import {MatSnackBar} from "@angular/material/snack-bar";
+import {ProductService} from "../../../../service/product/product.service";
 
 @Component({
   selector: 'app-manage-product-images',
@@ -28,26 +28,27 @@ import {MatSnackBar} from "@angular/material/snack-bar";
   templateUrl: './manage-product-images.component.html',
   styleUrl: './manage-product-images.component.scss'
 })
-export class ManageProductImagesComponent implements OnInit{
+export class ManageProductImagesComponent implements OnInit {
 
   messageBox = false;
   content = false;
-  selectedImage:any;
+  image: any;
+  loading: boolean = false;
 
-  product:any;
+  product: any;
 
   readonly data = inject(MAT_DIALOG_DATA);
+  readonly service = inject(ProductService);
 
   form = new FormGroup({
-    file:new FormControl('',[
+    file: new FormControl(null, [
       Validators.required
     ])
   })
 
   constructor(
-    private imageService:ProductImagesService,
-    private dialogRef:MatDialogRef<ManageProductImagesComponent>,
-    private snackBar:MatSnackBar
+    private dialogRef: MatDialogRef<ManageProductImagesComponent>,
+    private snackBar: MatSnackBar
   ) {
     this.product = this.data;
   }
@@ -56,23 +57,56 @@ export class ManageProductImagesComponent implements OnInit{
     this.content = true;
   }
 
-  addImages(){
-    this.imageService.create(this.selectedImage,this.product.propertyId).subscribe(response=>{
-      this.dialogRef.close(true);
+  onFileSelected(event: Event) {
+    const fileInput = event.target as HTMLInputElement;
+    this.image = fileInput.files?.[0];
+    if (this.image) {
+      if (this.isFileSizeValid(this.image)) {
+        const allowedExtensions = ['jpg', 'jpeg', 'png', 'webp', 'pdf'];
+        const fileExtension = this.image.name.split('.').pop()?.toLowerCase();
 
-      this.snackBar.open('Image Added!','Close',{
-        duration:3000,
-        direction:'ltr',
-        verticalPosition:'bottom',
-        horizontalPosition:'start'
-      })
+        if (fileExtension && allowedExtensions.includes(fileExtension)) {
+          this.handleFile(this.image);
+        } else {
+          this.image = null;
+          fileInput.value = '';
+          return;
+        }
 
-    },error => {
-      console.log(error?.error?.message);
-    })
+      } else {
+        this.image = null;
+        fileInput.value = '';
+        return;
+        // Show a warning or error message to the user indicating that the file size is too large.
+      }
+    }
   }
 
-  imageChange(file: any) {
-    this.selectedImage = file.target.files[0];
+  isFileSizeValid(file: File): boolean {
+    const maxSizeInBytes = 5 * 1024 * 1024; // 5 MB in bytes
+    return file.size <= maxSizeInBytes;
   }
+
+  handleFile(file: File) {
+    const reader = new FileReader();
+    reader.onload = () => {
+      this.image = reader.result;
+    };
+    reader.readAsDataURL(file);
+  }
+
+  uploadFile() {
+
+    this.loading = true;
+
+    const formdata = new FormData();
+    formdata.append('productImage', this.image)
+
+    this.service.productImageUpload(formdata, this.data?.propertyId)
+      .subscribe(response => {
+        console.log(response);
+        this.loading = false;
+      });
+  }
+
 }
